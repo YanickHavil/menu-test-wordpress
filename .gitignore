@@ -1,0 +1,6 @@
+*.log
+*.cache
+.DS_Store
+/node_modules
+/vendor
+/wp-content/uploads
