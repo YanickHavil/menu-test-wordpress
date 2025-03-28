@@ -33,3 +33,5 @@ Cela permettra de pouvoir également générer le contenue des sous-section avec
 J'ai également fais le choix de créer des menus directement dans Wordpress afin de prévoir une évolution future
 ou le client pourrait modifier à son aise les labels des menus sans impacter leur fonctionnement.
 
+Pour ce qui est du contenu des sections j'ai décidé de faire avec des images pour pas alourdir le code.
+Mise à part ça on aurait pu imaginer la création automatique de posts possèdant une catégorie qui ensuite s'affiche suite à un appel de l'API REST.
