@@ -1,0 +1,101 @@
+Tests Requêtes SQL :
+
+Partie 1:
+1)
+
+SELECT * 
+FROM wp_posts 
+WHERE post_type = 'post' 
+AND post_status = 'publish' 
+ORDER BY post_date DESC;
+
+2)
+
+SELECT u.display_name, COUNT(p.ID) AS nombre_articles
+FROM wp_posts p
+JOIN wp_users u ON p.post_author = u.ID
+WHERE p.post_type = 'post' 
+AND p.post_status = 'publish'
+GROUP BY u.display_name
+ORDER BY nombre_articles DESC;
+
+3)
+
+SELECT p.post_title, pm.meta_value
+FROM wp_posts p
+JOIN wp_postmeta pm ON p.ID = pm.post_id
+WHERE p.post_type = 'post' 
+AND p.post_status = 'publish'
+AND pm.meta_key = '_thumbnail_id';
+
+Partie 2 :
+
+1)
+
+SELECT p.post_title, u.display_name, COUNT(pm.meta_id) AS meta_count
+FROM wp_posts p
+JOIN wp_users u ON p.post_author = u.ID
+LEFT JOIN wp_postmeta pm ON p.ID = pm.post_id
+WHERE p.post_type = 'post' 
+AND p.post_status = 'publish'
+GROUP BY p.ID, u.display_name
+ORDER BY p.post_date DESC
+LIMIT 5;
+
+2)
+
+SELECT ID, post_title, post_date
+FROM wp_posts
+WHERE post_type = 'post' 
+AND post_status = 'publish'
+AND (post_title LIKE '%WordPress%' OR post_content LIKE '%WordPress%')
+ORDER BY post_date DESC;
+
+3) 
+
+SELECT u.ID, u.display_name, u.user_login, u.user_email
+FROM wp_users u
+LEFT JOIN wp_posts p ON u.ID = p.post_author AND p.post_type = 'post' AND p.post_status = 'publish'
+WHERE p.ID IS NULL;
+
+
+Partie 3 :
+
+WITH MonthlySales AS (
+    SELECT 
+        DATE_FORMAT(p.post_date, '%Y-%m') AS month,
+        COUNT(DISTINCT p.ID) AS total_orders,
+        SUM(pm.meta_value) AS total_sales,
+        SUM(pm.meta_value) / COUNT(DISTINCT p.ID) AS avg_order_value
+    FROM wp_posts p
+    JOIN wp_postmeta pm ON p.ID = pm.post_id AND pm.meta_key = '_order_total'
+    WHERE p.post_type = 'shop_order' 
+      AND p.post_status IN ('wc-completed', 'wc-processing')
+      AND YEAR(p.post_date) = 2023
+    GROUP BY month
+),
+TopProduct AS (
+    SELECT 
+        DATE_FORMAT(p.post_date, '%Y-%m') AS month,
+        oi.order_item_name AS top_product,
+        COUNT(*) AS product_count,
+        RANK() OVER (PARTITION BY DATE_FORMAT(p.post_date, '%Y-%m') ORDER BY COUNT(*) DESC) AS rnk
+    FROM wp_posts p
+    JOIN wp_wc_order_items oi ON p.ID = oi.order_id
+    WHERE p.post_type = 'shop_order' 
+      AND p.post_status IN ('wc-completed', 'wc-processing')
+      AND YEAR(p.post_date) = 2023
+      AND oi.order_item_type = 'line_item'
+    GROUP BY month, oi.order_item_name
+)
+SELECT 
+    ms.month,
+    ms.total_orders,
+    ms.total_sales,
+    ms.avg_order_value,
+    tp.top_product
+FROM MonthlySales ms
+LEFT JOIN TopProduct tp ON ms.month = tp.month AND tp.rnk = 1
+ORDER BY ms.month;
+
+
