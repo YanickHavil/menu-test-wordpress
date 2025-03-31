@@ -27,14 +27,13 @@ Essayer de cliquer sur les catégorie du menu afin de le tester.
 
 ## Choix techniques
 
-J'ai utiliser une mini API REST afin de pouvoir charger le sous-menu de "About the group" nottament.
-Cela permettra de pouvoir également générer le contenue des sous-section avec les posts adéquats.
+J'ai utilisé une mini API REST afin de pouvoir charger le sous-menu de "About the group" notamment. 
+Cela permettra de pouvoir également générer le contenu des sous-sections avec les posts adéquats.
 
-J'ai également fais le choix de créer des menus directement dans Wordpress afin de prévoir une évolution future
-ou le client pourrait modifier à son aise les labels des menus sans impacter leur fonctionnement.
+J'ai également fait le choix de créer des menus directement dans WordPress afin de prévoir une évolution future où le client pourrait modifier à son aise les labels des menus sans impacter leur fonctionnement.
 
-Pour ce qui est du contenu des sections j'ai décidé de faire avec des images par simplicité.
+Pour ce qui est du contenu des sections j'ai décidé de faire avec des images par simplicité. 
 On aurait pu imaginer la création automatique de posts possèdant une catégorie qui ensuite s'affiche suite à un appel de l'API REST.
 
-J'ai choisi de faire le menu sous forme de plugin car j'ai l'habitude de travailler comme ça à chaque fois que je fais un dev sur-mesure.
-Je trouve que ça permet de mieux s'organiser sur plusieurs développement sur un même site ou même de pouvoir le réutiliser/adapter pour un autre.
+J'ai choisi de faire le menu sous forme de plugin car j'ai l'habitude de travailler comme ça à chaque fois que je fais un dev sur-mesure. 
+Je trouve que ça permet de mieux s'organiser sur plusieurs développements sur un même site ou même de pouvoir le réutiliser/adapter pour un autre.
